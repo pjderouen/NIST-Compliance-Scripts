@@ -1,0 +1,23 @@
+# AC-2(3): ACCOUNT MANAGEMENT | DISABLE INACTIVE ACCOUNTS
+# The information system automatically disables inactive accounts after not to exceed ninety (90) days.
+
+$DEFAULT_ADMINISTRATOR  = "Administrator"
+$USER_INACTIVITY_LIMIT  = 90
+
+$Computer = [ADSI]("WinNT://$env:computername")
+$Users = $Computer.psbase.children | where {
+    $_.psbase.schemaClassName -eq 'User'
+}
+
+# Filter out stale users and exclude the default administrator account.
+$StaleUsers = ForEach($User in $Users) {
+    New-Object PSObject -Property @{
+        Name       = $User.Name[0]
+        LastLogin  = $User.LastLogin[0]
+        Inactivity = $(([datetime]::Today - $User.LastLogin[0]).Days)
+    }|?{$_.DaysOld -gt $USER_INACTIVITY_LIMIT}
+}
+
+ForEach($StaleUser in $StaleUsers) {
+    Disable-LocalUser -Name $StaleUser.Name
+}
