@@ -1,0 +1,13 @@
+# AC-9 | PREVIOUS LOGON (ACCESS) NOTIFICATION
+# The information system notifies the user, upon successful logon (access) to the system, 
+# of the date and time of the last logon (access).
+
+$USER_INACTIVITY_LIMIT = 90
+
+$DateRange = (Get-Date) – (New-TimeSpan -Day $USER_INACTIVITY_LIMIT)
+
+# search last 90 days
+
+# obtain most recent login
+
+# display most recent login
