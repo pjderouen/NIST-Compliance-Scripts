@@ -12,12 +12,14 @@ $Users = $Computer.psbase.children | where {
 # Filter out stale users and exclude the default administrator account.
 $StaleUsers = ForEach($User in $Users) {
     New-Object PSObject -Property @{
-        Name       = $User.Name[0]
-        LastLogin  = $User.LastLogin[0]
-        Inactivity = $(([datetime]::Today - $User.LastLogin[0]).Days)
-    }|?{$_.DaysOld -gt $USER_INACTIVITY_LIMIT}
+        Name       = $_.Name
+        LastLogin  = $_.LastLogin
+        Inactivity = $(([datetime]::Today - $_.LastLogin).Days)
+    }|?{$_.Inactivity -gt $USER_INACTIVITY_LIMIT}
 }
 
 ForEach($StaleUser in $StaleUsers) {
-    Disable-LocalUser -Name $StaleUser.Name
+    If($_.Name -ne $DEFAULT_ADMINISTRATOR) { 
+        Disable-LocalUser -Name $_.Name
+    } Else { continue }
 }
