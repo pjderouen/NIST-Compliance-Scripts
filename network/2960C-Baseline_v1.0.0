@@ -1,0 +1,139 @@
+!#*********************************************************************************************
+!#***  Device:  Cisco 2960C series devices
+!#*********************************************************************************************
+!#***  Purpose: Use this script to establish the switch configuration baseline
+!#     
+!#     Site code information
+!#     *********************
+!#     Use format SITE_LOC_TT_NN where
+!#     SITE is the location's four letter code
+!#     LOC is the logical OSPF zone location
+!#     TT is the two letter type
+!#     NNN is the switch number
+!#
+!#     ex. FRSN_Z00_IR_01
+!#         RENO_Z00_AS_01
+!#*********************************************************************************************
+!
+!
+!begin
+!
+!
+configure terminal
+!
+!hostname SITE_LOC_TT_NNN
+!
+no service pad
+service timestamps debug datetime
+service timestamps log datetime
+service password-encryption
+service linenumber
+no service finger
+no service udp-small-servers
+no service tcp-small-servers
+no service config
+!
+!boot system flash <DEVICE:CURRENT_BOOT_IMAGE>
+!
+no logging console
+logging monitor informational
+enable secret LX3bqZpXrSVKEnye
+!
+clock timezone utc 0
+ip subnet-zero
+no ip source-route
+no ip domain-lookup
+!
+no ip bootp server
+!
+vtp domain SITEBASELINE
+vtp mode transparent
+no vtp version 2
+vtp password SITEBASELINE
+!
+udld enable
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+lldp run
+!
+!
+vlan 2
+ name C_UNUSED
+!
+interface Vlan1
+ no description
+ no ip address
+ shutdown
+!
+ip classless
+no ip http server
+no ip secure server
+!
+snmp-server location BLDG_####_FLOOR_#####_ROOM_####_RACK_####_
+!
+!
+alias exec 2960C_BASE N_2960C_BASE_v1_00_0
+!
+!
+end
+!
+write memory
+!
+!#*********************************************************************************************
+!#***  Device:  Baseline Switchport activation baseline
+!#*********************************************************************************************
+!#***  Purpose: Use this script to establish the port configuration of a 2960C series device.
+!#*********************************************************************************************
+!
+!
+configure terminal
+!
+interface range FastEthernet0/1 - 12
+ description <== DISABLED ==>
+ switchport
+ switchport access vlan 2
+ switchport mode access
+ no logging event link-status
+ no snmp trap link-status
+ no cdp enable
+ shutdown
+!
+interface range GigabitEthernet0/1 - 4
+ description <== DISABLED ==>
+ switchport
+ switchport access vlan 2
+ switchport mode access
+ no logging event link-status
+ no snmp trap link-status
+ no cdp enable
+ shutdown
+!
+alias exec 2960C_PORT_BASE N_2960C-PORT-ACT_BASE-v1_0_0
+!
+end
+!
+write memory
+!
+!#*********************************************************************************************
+!#***  Device:  Baseline console activation baseline
+!#*********************************************************************************************
+!#***  Purpose: Use this script to establish the console baseline of a device.
+!#*********************************************************************************************
+!
+!
+configure terminal
+!
+line con 0
+ exec-timeout 3 0
+ password b4sel1ne
+ login
+!
+alias exec 2960C-CON-VTY N_INNER-v1_0_0
+end
+!
+write memory
+!
