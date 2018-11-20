@@ -1,0 +1,111 @@
+!#*********************************************************************************************
+!#***  Device:  Cisco 2960 series devices
+!#*********************************************************************************************
+!#***  Purpose: Use this script to establish the switch configuration baseline
+!#*********************************************************************************************
+!
+!begin
+!
+!
+configure terminal
+!
+no service pad
+service timestamps debug datetime
+service timestamps log datetime
+service password-encryption
+service linenumber
+no service finger
+no service udp-small-servers
+no service tcp-small-servers
+no service config
+!
+!boot system flash <DEVICE:CURRENT_BOOT_IMAGE>
+!
+no logging console
+logging monitor informational
+enable secret LX3bqZpXrSVKEnye
+!
+clock timezone utc 0
+ip subnet-zero
+no ip source-route
+no ip domain-lookup
+!
+no ip bootp server
+!
+vtp domain B4SEL1NE
+vtp mode transparent
+no vtp version 2
+vtp password B4SEL1NE
+!
+udld enable
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+vlan 2
+ name U_UNUSED
+!
+!
+interface Vlan1
+ no description
+ no ip address
+ shutdown
+!
+ip classless
+no ip http server
+no ip http secure-server
+!
+snmp-server location BLDG_####_FLOOR_#####_ROOM_####_RACK_####_
+!
+!
+!
+banner login ^
+
+You are accessing a U.S. Government (USG) Information System (IS) that is
+provided for USG-authorized use only. By using this IS (which includes any
+device attached to this IS), you consent to the following conditions:
+
+- The USG routinely intercepts and monitors communications on this IS for
+  purposes including, but not limited to, penetration testing, COMSEC
+  monitoring, network operations and defense, personnel misconduct (PM), law
+  enforcement (LE), and counterintelligence (CI) investigations.
+- At any time, the USG may inspect and seize data stored on this IS.
+- Communications using, or data stored on, this IS are not private, are subject
+  to routine monitoring, interception, and search, and may be disclosed or used
+  for any USG-authorized purpose.
+- This IS includes security measures (e.g., authentication and access controls)
+  to protect USG interests--not for your personal benefit or privacy.
+- Notwithstanding the above, using this IS does not constitute consent to PM,
+  LE or CI investigative searching or monitoring of the content of privileged
+  communications, or work product, related to personal representation or
+  services by attorneys, psychotherapists, or clergy, and their assistants.
+  Such communications and work product are private and confidential. See User
+  Agreement for details.
+
+^
+!
+!line con 0
+! exec-timeout 3 0
+! password <OOB_PASS>
+! login
+!line vty 0 4
+! exec-timeout 3 0
+! password <OOB_PASS>
+! login
+! transport input telnet
+!line vty 5 15
+! exec-timeout 3 0
+! password <OOB_PASS>
+! transport input none
+! login
+!
+alias exec utb-sm-es-switch baseline_v1_1_3
+!
+end
+!
+write memory
+!
