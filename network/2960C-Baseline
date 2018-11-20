@@ -52,6 +52,7 @@ no vtp version 2
 vtp password SITEBASELINE
 !
 udld enable
+no ip routing
 !
 !
 !
