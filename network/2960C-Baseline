@@ -131,9 +131,36 @@ line con 0
  exec-timeout 3 0
  password b4sel1ne
  login
+line vty 0 4
+ login
+ transport input none
+line vty 5 15
+ login
+ transport input none
 !
 alias exec 2960C-CON-VTY N_INNER-v1_0_0
 end
 !
 write memory
 !
+!#**************************************************************************************
+!#***  Type:     Baseline ACL - All Network Devices
+!#***  Version:  1.0.0
+!#**************************************************************************************
+!#***  Device:   Any managed network device
+!#**************************************************************************************
+!#***  Purpose: Baseline ACL to meet compliance requirements
+!#**************************************************************************************
+!
+!
+configure terminal
+!
+!
+no access-list ??
+!
+access-list ?? remark Universal Baseline Compliance
+!
+!
+end
+!
+write memory
