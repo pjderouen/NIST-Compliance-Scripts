@@ -63,7 +63,7 @@ lldp run
 !
 !
 vlan 2
- name C_UNUSED
+ name UNUSED
 !
 interface Vlan1
  no description
