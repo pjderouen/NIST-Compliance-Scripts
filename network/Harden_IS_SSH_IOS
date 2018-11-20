@@ -55,7 +55,7 @@ logging buffered 200000 notification
 logging monitor informational
 logging trap notification
 no enable password
-aaa new-model
+!aaa new-model
 !
 clock timezone utc 0
 ip subnet-zero
@@ -64,7 +64,6 @@ no ip gratuitous-arps
 !
 !
 no ip domain-lookup
-no ip domain lookup
 ip domain-name DOMAIN.com
 no ip bootp server
 ip tcp synwait-time 10
