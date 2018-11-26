@@ -139,7 +139,7 @@ write memory
 configure terminal
 !
 ! Refer to top of script 
-hostname CCCCCCCC_LLL_TT_NN
+hostname CA000000_Z00_AS_00
 !
 no ip routing
 !
@@ -183,10 +183,7 @@ write memory
 configure terminal
 !
 !
-no access-list 99
-!
-access-list 99 remark Universal Baseline Compliance
-access-list deny
+
 !
 !
 end
