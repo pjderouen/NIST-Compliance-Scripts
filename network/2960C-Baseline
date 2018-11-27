@@ -83,7 +83,6 @@ snmp-server location BLDG_####_FLOOR_#####_ROOM_####_RACK_####_
 alias exec 2960C_BASE N_2960C_BASE_v1_00_0
 !
 !
-!
 line con 0
  exec-timeout 3 0
  password B4SEL1NE
@@ -130,7 +129,7 @@ end
 write memory
 !
 !#*********************************************************************************************
-!#***  Device:  Baseline acess switch
+!#***  Device:  Baseline access switch
 !#*********************************************************************************************
 !#***  Purpose: Use this script to configure access to the switch
 !#*********************************************************************************************
@@ -150,14 +149,36 @@ vtp password SITEBASELINE
 !
 spanning-tree mode rapid-pvst
 !
+! 
 interface Vlan99
  description <== Management VLAN ==>
- ip address x.x.x.x 255.255.255.0
+ ip address 172.16.0.1 255.255.255.0
  no ip redirects
  no ip proxy-arp
  no ip mask-reply
  no ip directed-broadcast
  no shutdown
+!
+interface GigabitEthernet0/1
+ description <== TRUNK TO XX ==>
+ switchport
+ switchport trunk native vlan 3
+ switchport encapsulation dot1q
+ switchport trunk allowed vlan 99-1005
+ switchport mode dynamic desirable
+ cdp enable
+ no shutdown
+!
+!interface GigabitEthernet0/2
+! description <== TRUNK TO XX ==>
+! switchport
+! switchport trunk native vlan 3
+! switchport encapsulation dot1q
+! switchport trunk allowed vlan 99-1005
+! switchport mode dynamic desirable
+! cdp enable
+! no shutdown
+!
 !
 ip default gateway x.x.x.x
 !
